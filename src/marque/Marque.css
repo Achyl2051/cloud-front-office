@@ -1,0 +1,13 @@
+  .marque-flex {
+    display: flex;
+    margin-left: 20em;
+    
+  }
+  
+  .marque-title {
+    margin-left: 20rem;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    font-size: 20px;
+  }
+  
