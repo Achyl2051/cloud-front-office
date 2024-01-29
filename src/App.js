@@ -1,18 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
-import Nav from './navigation/Nav';
-import Products from './products/Products';
-import Marque from './marque/Marque';
-import Sidebar from './sidebar/Sidebar';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Navbar from './layout/Navbar';
+import Home from './pages/Home';
+import DetailAnnonce from './pages/DetailAnnonce';
+import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <Sidebar/>
-      <Nav/>
-      <Marque/>
-      <Products/>
-    </>
+    <div className="sApp">
+      <Router>
+      <Navbar />
+        <Routes>
+          <Route excat path='/' element={<Home/>} />
+          <Route excat path='/detailannonce/:id' element={<DetailAnnonce/>} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
