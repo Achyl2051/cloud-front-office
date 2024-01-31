@@ -1,10 +1,9 @@
-import '../assets/css/annonce.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaPhoneSquare } from 'react-icons/fa';
 import axios from 'axios';
 
-export default function Home() {
+export default function Profil() {
     let navigate = useNavigate();
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
@@ -16,15 +15,16 @@ export default function Home() {
     }, []);
 
     const loadAnnonceEnVente = async () => {
-        const params = new URLSearchParams();
-        params.append("idUser", userId);
-        const result = await axios.get("http://localhost:8080/auth/annonces/envente", params ,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        setAnnoncesEnVente(result.data);
-        console.log(result.data);
+        try{
+            const result = await axios.get("http://localhost:8080/auth/annonces/annonces/users/"+userId, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setAnnoncesEnVente(result.data);
+        }catch(error){
+            navigate('/login');    
+        }
     };
 
     const redirectToDetailPage = (idAnnonce) => {
@@ -58,10 +58,10 @@ export default function Home() {
                             </div>
                             <div className="car-actions">
                                 <div>
-                                    {annonce.liked.toString() === 'true' ? (
-                                        <span style={{ fontSize: '1.5em' }}> <FaHeart className="nav-icons" style={{ color: 'red' }} /> </span>
-                                        ) : (
+                                    {annonce.annonce.liked ? (
                                         <span style={{ fontSize: '1.5em' }}> <FaRegHeart className="nav-icons" /> </span>
+                                    ) : (
+                                        <span style={{ fontSize: '1.5em' }}> <FaHeart className="nav-icons" style={{ color: 'red' }} /> </span>
                                     )}
                                     <span style={{ fontSize: '1.5em' }}> <FaPhoneSquare className="nav-icons" /> </span>
                                 </div>

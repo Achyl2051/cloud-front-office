@@ -135,10 +135,54 @@ p {
 .dbuy-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #27ae60;
+    background-color: #a66a11;
     color: #fff;
+    text-align: center;
     text-decoration: none;
     font-size: 1.2em;
     border-radius: 4px;
     margin-bottom: 20px;
+}
+
+.dcontacter-button {
+    float:right;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+.dfavoris-button {
+    float:right;
+    background-color: #7a5e63;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.den-vente-label {
+    position: absolute;
+    bottom: 10px;
+    right: 90px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 12px;
 }
