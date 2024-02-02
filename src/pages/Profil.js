@@ -63,6 +63,37 @@ export default function Profil() {
             navigate("/login");
         }
     };
+    const onClickLiked = async (e, idAnnonce) => {
+        e.preventDefault();
+        console.log("liked");
+        try {
+                const params = new URLSearchParams();
+                params.append("idAnnonce", idAnnonce);
+                params.append("idUser", userId.id);    
+                await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
+                    params,
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                window.location.reload();
+        } catch (error) {
+            navigate("/login");
+        }
+    };
+    const onClickDislike = async (e, idAnnonce) => {
+        e.preventDefault();
+        console.log("disliked");
+        try {
+            const params = new URLSearchParams();
+            params.append("idAnnonce", idAnnonce);
+            params.append("idUser", userId.id);
+            await axios.post("http://localhost:8080/annoncefavoris", params, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            window.location.reload();
+        } catch (error) {
+            navigate("/login");
+        }
+    };
     
     return (
         <>
@@ -97,9 +128,19 @@ export default function Profil() {
                             <div className="car-actions">
                                 <div>
                                     {annonce.liked.toString() === 'true' ? (
-                                        <span style={{ fontSize: '1.5em' }}> <FaHeart className="nav-icons" style={{ color: 'red' }}  name="liked" onClick={(e) => onClick(e,annonce.annonce.idAnnonce)} /> </span>
+                                        <button 
+                                            style={{ fontSize: '1.5em', border: 'none', backgroundColor: '#f8f8f8' }}
+                                            onClick={(e) => onClickLiked(e, annonce.annonce.idAnnonce)}
+                                        >
+                                        <FaHeart className="nav-icons" style={{ color: 'red' }} />
+                                    </button>
                                         ) : (
-                                        <span style={{ fontSize: '1.5em' }}> <FaRegHeart className="nav-icons"  name="disliked" onClick={(e) => onClick(e,annonce.annonce.idAnnonce)}  /> </span>
+                                            <button 
+                                            style={{ fontSize: '1.5em', border: 'none', backgroundColor: '#f8f8f8' }}
+                                            onClick={(e) => onClickDislike(e, annonce.annonce.idAnnonce)}
+                                        >
+                                            <FaRegHeart className="nav-icons" />
+                                        </button>
                                     )}
                                 </div>
                                 <button className="details-button" onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)}>Détails</button>

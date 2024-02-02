@@ -16,11 +16,8 @@ export default function Home() {
     }, []);
 
     const loadAnnonceEnVente = async () => {
-        const params = new URLSearchParams();
-        if (userId && userId.id) {
-            params.append("idUser", userId.id);
-        }
-        const result = await axios.get("http://localhost:8080/auth/annonces/envente", params ,{
+        const idToUse = userId ? userId.id : 0;
+        const result = await axios.get(`http://localhost:8080/auth/annonces/envente?idUser=${idToUse}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -28,6 +25,7 @@ export default function Home() {
         setAnnoncesEnVente(result.data);
         console.log(result.data);
     };
+    
 
     const redirectToDetailPage = (idAnnonce) => {
         navigate(`/detailannonce/${idAnnonce}`);
