@@ -6,7 +6,7 @@ body {
 }
 
 .dcar-details-page {
-    max-width: 800px;
+    max-width: 750px;
     margin: auto;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -38,7 +38,7 @@ body {
 }
 
 .dmain-image {
-    width: 100%;
+    width: 750px;
     height: 400px;
     object-fit: cover;
 }
@@ -185,4 +185,17 @@ p {
     border-radius: 3px;
     text-align: center;
     font-size: 12px;
+}
+
+.dstatusenvente {
+    color: #1cae1c; 
+    font-size: 18px;
+    font-weight: bold;
+    float: right;
+}
+.dstatusvendu {
+    color: #d61e1e; 
+    font-size: 18px;
+    font-weight: bold;
+    float: right;
 }

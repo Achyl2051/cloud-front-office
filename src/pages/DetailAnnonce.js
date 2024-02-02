@@ -2,9 +2,10 @@ import '../assets/css/detailannonce.css';
 import React, { useEffect, useState } from 'react';
 import {FaHeart,FaRegHeart,FaPhoneSquare } from 'react-icons/fa';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 
 export default function DetailAnnonce() {
+    let navigate = useNavigate();
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     const userId = JSON.parse(user);
@@ -61,9 +62,8 @@ export default function DetailAnnonce() {
 
     const loadDetailAnnonce = async () => {
         try {
-            const params = new URLSearchParams();
-            params.append('idUser', userId);
-            const response = await axios.get(`http://localhost:8080/auth/annonces/details/${id}`, {
+            const idToUse = userId ? userId.id : 0;
+            const response = await axios.get(`http://localhost:8080/auth/annonces/details/${id}?idUser=`+idToUse, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -89,6 +89,37 @@ export default function DetailAnnonce() {
         });
         setCategorie(result.data);
     }
+    const onClickLiked = async (e, idAnnonce) => {
+        e.preventDefault();
+        console.log("liked");
+        try {
+                const params = new URLSearchParams();
+                params.append("idAnnonce", idAnnonce);
+                params.append("idUser", userId.id);    
+                await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
+                    params,
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                window.location.reload();
+        } catch (error) {
+            navigate("/login");
+        }
+    };
+    const onClickDislike = async (e, idAnnonce) => {
+        e.preventDefault();
+        console.log("disliked");
+        try {
+            const params = new URLSearchParams();
+            params.append("idAnnonce", idAnnonce);
+            params.append("idUser", userId.id);
+            await axios.post("http://localhost:8080/annoncefavoris", params, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            window.location.reload();
+        } catch (error) {
+            navigate("/login");
+        }
+    };
 
   return (
     <>
@@ -102,10 +133,15 @@ export default function DetailAnnonce() {
         <div class="dcar-gallery">
             <img class="dcar-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="Voiture 1" />
             <img class="dcar-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="Voiture 2" />
-            <img class="dcar-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="Voiture 3" />
+            <img class="dcar-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="Voiture 2" />
         </div>
         
         <div class="dcar-details">
+            {detailannonce.annonce.status == 0 ? (
+            <p className="dstatusenvente">  En vente </p>
+            ):(
+            <p className="dstatusvendu">  Vendu </p>
+            )}
             <h1>{detailannonce.annonce.modele.marque.nom} {detailannonce.annonce.modele.nom}</h1>
             <div class="downer-info">
                 <img class="downer-avatar" src={detailannonce.annonce.proprietaire.photoProfil} alt="Avatar" />
@@ -118,7 +154,12 @@ export default function DetailAnnonce() {
                 <p>{detailannonce.annonce.description}</p>
             </div>
             <p class="dcar-price">Prix: {detailannonce.annonce.prix.toLocaleString('en-US')} MGA</p>
-            <a href="#" class="dbuy-button">Acheter</a>
+            
+            {detailannonce.annonce.status == 0 && detailannonce.annonce.proprietaire.id !== userId?.id ?(
+                <a class="dbuy-button">Acheter</a>
+            ):(
+                <p></p>
+            )}
             <div class="dcategory-list">
                 {
                     categorie.map((cat) => (
@@ -154,9 +195,13 @@ export default function DetailAnnonce() {
         <div className="dbutton-container">
             <button className="dcontacter-button"><FaPhoneSquare /> Contacter</button>
             {detailannonce.liked.toString() === 'true' ? (
-                <button className="dfavoris-button"><FaHeart /> Supprimer favoris</button>
+                <button className="dfavoris-button"
+                onClick={(e) => onClickLiked(e, detailannonce.annonce.idAnnonce)}
+                ><FaHeart /> Supprimer favoris</button>
             ) : (
-                <button className="dfavoris-button"><FaHeart /> Ajouter favoris</button>
+                <button className="dfavoris-button"
+                onClick={(e) => onClickDislike(e, detailannonce.annonce.idAnnonce)}
+                ><FaHeart /> Ajouter favoris</button>
             )}
         </div>
     </div>

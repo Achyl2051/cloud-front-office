@@ -96,3 +96,26 @@ p {
     border-radius: 4px;
     cursor: pointer;
 }
+.for-sale-badge-envente {
+    position: relative;
+    background-color: #98fb98; 
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.for-sale-badge-vendu {
+    position: relative;
+    background-color: #8b0000; 
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.badge-text-envente {
+    color: #006400; 
+    font-size: 14px;
+    font-weight: bold;
+}
+.badge-text-vendu {
+    color: #ffffff; 
+    font-size: 14px;
+    font-weight: bold;
+}
