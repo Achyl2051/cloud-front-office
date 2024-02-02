@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaEnvelope, FaHeart, FaUser, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
+import { FiHome } from "react-icons/fi";
 import "../assets/css/Nav.css";
 import logo from "../assets/img/omby.png";
 
@@ -13,12 +14,12 @@ export default function Navbar() {
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div className="container-fluid">
-          <img src={logo} alt="Logo" style={{ width: '50px', height: '50px', marginRight: '15px' }} />
-          <Link className="navbar-brand" to="/"> Ombaika-Mitady</Link>
+          <img src={logo} alt="Logo" style={{ width: '40px', height: '40px', marginRight: '15px' }} />
+          <Link className="navbar-brand" to="/"></Link>
 
-          <div className="nav-container">
+          <div className="searchBar">
             <input
-              className="form-control search-input"
+              className="searchBarInput"
               type="text"
               placeholder="Rechercher des annonces"
             />
@@ -28,20 +29,20 @@ export default function Navbar() {
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item" style={{marginTop: '0.5%', paddingTop: '0.5%'}} >
                 <Link className="nav-link" to="/">
-                  <FaHome />{' '}
-                  <span className="link-text">Accueil</span>
+                  <FiHome />{' '}
+                  <span className="link-text"></span>
                 </Link>
               </li>
               <li className="nav-item" style={{marginTop: '0.5%', paddingTop: '0.5%'}} >
                 <Link className="nav-link" to="/message">
                   <FaEnvelope />{' '}
-                  <span className="link-text">Message</span>
+                  <span className="link-text"></span>
                 </Link>
               </li>
               <li className="nav-item" style={{marginTop: '0.5%', paddingTop: '0.5%'}} >
                 <Link className="nav-link" to="/favoris">
                   <FaHeart />{' '}
-                  <span className="link-text">Favoris</span>
+                  <span className="link-text"></span>
                 </Link>
               </li>
               <li className="nav-item" style={{marginTop: '0.5%', paddingTop: '0.5%'}} >
@@ -61,11 +62,11 @@ export default function Navbar() {
               </li>
               ) : (
               <li className="nav-item">
-                <Link className="nav-link" to="/logout">
-                  <button className="btn btn-outline-dark" type="button">
+                <Link className="button nav-link" to="/logout">
+                  {/* <button className="" type="button"> */}
                     <FaSignOutAlt />{' '}
-                    <span className="link-text">Deconnexion</span>
-                  </button>
+                    <span >Deconnexion</span>
+                  {/* </button> */}
                 </Link>
               </li>
               )}

@@ -1,7 +1,8 @@
-import '../assets/css/annonce.css';
+import '../assets/css/annonce2.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaPhoneSquare } from 'react-icons/fa';
+import { FiHome } from "react-icons/fi";
 import axios from 'axios';
 
 export default function Home() {
