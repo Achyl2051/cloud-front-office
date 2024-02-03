@@ -1,29 +1,51 @@
-body {
+.threeSpaces {
+    position: relative;
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    display: flex;
+    /* padding: 20px; */
+    display: grid;
     justify-content: center;
+    grid-template-columns: 1fr 2fr 1fr;
+    /* gap: 20px; */
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.annonces {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
     gap: 20px;
     max-width: 1200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: #c7c7c7;
 }
 
+.annonces ::-webkit-scrollbar {
+    width: 29px;
+  }
+
+
 .car-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 150px;
+    width: 100%;
+    background: white;
+    padding: 5px;
+
+
 }
 
 .car-image {
     width: 100%;
-    height: 200px;
+    height: 400px;
     object-fit: cover;
+    border-radius: 10px;
 }
 
 
@@ -31,7 +53,8 @@ body {
     padding: 15px;
 }
 
-h2, p {
+h2,
+p {
     margin: 0;
 }
 
@@ -48,7 +71,7 @@ p {
     display: flex;
     align-items: center;
     padding: 10px;
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
     border-bottom: 1px solid #ddd;
 }
 
@@ -80,10 +103,11 @@ p {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background-color: #f8f8f8;
+    /* background-color: #f8f8f8; */
 }
 
-.like-icon, .message-icon {
+.like-icon,
+.message-icon {
     font-size: 24px;
     cursor: pointer;
 }
@@ -96,26 +120,43 @@ p {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .for-sale-badge-envente {
     position: relative;
-    background-color: #98fb98; 
+    background-color: #98fb98;
     padding: 5px 10px;
     border-radius: 5px;
 }
+
 .for-sale-badge-vendu {
     position: relative;
-    background-color: #8b0000; 
+    background-color: #8b0000;
     padding: 5px 10px;
     border-radius: 5px;
 }
 
 .badge-text-envente {
-    color: #006400; 
+    color: #006400;
     font-size: 14px;
     font-weight: bold;
 }
+
 .badge-text-vendu {
-    color: #ffffff; 
+    color: #ffffff;
     font-size: 14px;
     font-weight: bold;
+}
+
+.fixed {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.recommandations {
+    background-color: #c7c7c7;
+}
+
+.messages {
+    background-color: #c7c7c7;
 }

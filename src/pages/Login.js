@@ -8,8 +8,8 @@ export default function Login() {
     let navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        mail: "jonathandry@gmail.com",
-        password: "jonathandry"
+        mail: "falyarivelo@gmail.com",
+        password: "falyarivelo"
     });
 
     const [errors, setErrors] = useState({

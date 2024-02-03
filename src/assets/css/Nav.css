@@ -12,7 +12,7 @@
 
 nav {
   display: flex;
-  border-bottom: 2px solid #b81515;
+  /* border-bottom: 2px solid #b81515; */
   justify-content: space-between;
   align-items: center;
   padding: 0px;
@@ -20,6 +20,15 @@ nav {
   position: fixed;
   top: 0;
   width: 100%;
+  height: 50px;
+}
+
+.nav-elements{
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 input {
@@ -39,15 +48,39 @@ input {
 }
 
 .button {
-  /* position: absolute; */
-  /* right: 0; */
-  background-color: #000;
-  padding: 10px 15px;
+  background-color: #333333;
+  padding: 10px 25px;
   border-radius: 20px;
+  font-size: 14px;
   width: 'max-content';
-  /* margin-left: 80%; */
   color: #fff;
-  /* font-size: 25px; */
+  transition:all ease-in-out .3s; 
+}
+
+.button:hover,
+.button-logout:hover {
+  background-color: #000;
+
+}
+
+.button-logout .logout-icon{
+  transition: all ease-in-out .3s;
+}
+
+.button-logout:hover .logout-icon{
+  transform: translateX(5px);
+}
+.button-logout {
+  display: flex;
+  gap: 1rem;
+  text-decoration: none;
+  background-color: #333333;
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 'max-content';
+  color: #fff;
+  transition:all ease-in-out .3s; 
 }
 
 .searchBar {
@@ -57,13 +90,15 @@ input {
   padding-left: 25px;
   gap: 5px;
   align-items: center;
-  background-color: #dadada;
+  background-color: #e7e7e7;
   border-radius: 50px;
   width: 40%;
+  padding-right: 20px;
+
 }
 
 .searchBarInput {
-  background-color: #dadada;
+  background-color: #e7e7e7;
   width: 100%;
   /* color: #333333; */
   /* font-size: 20px; */
@@ -79,12 +114,61 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
+  width: 20px;
+  height: 20px;
   border-radius: 50px;
-  background-color: #ffffff;
-  padding: 0;
+  background-color: transparent;
+  color:#474747;
+}
+
+/* Styles pour le conteneur de l'image de profil */
+.profilePdp {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Styles pour l'image de profil à l'intérieur du conteneur */
+.profilePdpImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Utilisez 'object-fit: cover;' pour s'assurer que l'image couvre complètement le conteneur */
+}
+
+/* Dropdown.css */
+.dropdown-container {
+  position: absolute;
+  right:10px;
+  display: flex;
+  border-radius: 10px;
+  background-color: #fff;
+  min-width: 200px;
+  padding: 10px;
+  flex-direction: column;
+  gap: 3px;
 }
 
 
+.dropdown-list {
+  list-style: none;
+  background-color: red;
+}
 
+.dropdown-list li {
+  cursor: pointer;
+}
+
+.dropdown-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.menu-link{
+  padding: 5px 10px;
+  background-color: rgb(243, 243, 243);
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+}

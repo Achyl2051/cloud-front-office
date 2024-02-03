@@ -12,7 +12,7 @@ import {BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 
 function App() {
   return (
-    <div className="sApp">
+    <>
       <Router>
       <Navbar />
         <Routes>
@@ -25,7 +25,7 @@ function App() {
           <Route excat path='/message' element={<Message/>} />
         </Routes>
       </Router>
-    </div>
+    </>
   );
 }
 

@@ -22,13 +22,20 @@ body {
 }
 
 .dcar-image {
-    width: 200px;
-    height: 200;
+    width: 100px;
+    height: 400px;
     object-fit: cover;
     cursor: pointer;
     margin-right: 5px;
 }
 
+
+.dcar-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
 .dcar-image:last-child {
     margin-right: 0;
 }

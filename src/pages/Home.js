@@ -1,8 +1,7 @@
-import '../assets/css/annonce2.css';
+import '../assets/css/annonce.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaPhoneSquare } from 'react-icons/fa';
-import { FiHome } from "react-icons/fi";
 import axios from 'axios';
 
 export default function Home() {
@@ -11,6 +10,14 @@ export default function Home() {
     const token = localStorage.getItem('token');
     const userId = JSON.parse(user);
     const [annoncesEnVente, setAnnoncesEnVente] = useState([]);
+    const [allAnnonces, setAllAnnonces] = useState([]);
+    const [searchDescription, setSearchDescription] = useState("");
+    const [searchMarque, setSearchMarque] = useState("");
+    const [searchModel, setSearchModel] = useState("");
+    const [searchMinPrice, setSearchMinPrice] = useState("");
+    const [searchMaxPrice, setSearchMaxPrice] = useState("");
+    const [searchMinDate, setSearchMinDate] = useState("");
+    const [searchMaxDate, setSearchMaxDate] = useState("");
 
     useEffect(() => {
         loadAnnonceEnVente();
@@ -23,6 +30,7 @@ export default function Home() {
                 Authorization: `Bearer ${token}`,
             },
         });
+        setAllAnnonces(result.data);
         setAnnoncesEnVente(result.data);
         console.log(result.data);
     };
@@ -67,15 +75,100 @@ export default function Home() {
             navigate("/login");
         }
     };
+    const filterAnnonces = () => {
+        let filtered = allAnnonces.filter(annonce => {
+            return (
+                annonce.annonce.description.toLowerCase().includes(searchDescription.toLowerCase()) &&
+                (searchMinPrice === "" || annonce.annonce.prix >= parseFloat(searchMinPrice)) &&
+                (searchMaxPrice === "" || annonce.annonce.prix <= parseFloat(searchMaxPrice)) &&
+                (searchMinDate === "" || new Date(annonce.annonce.date) >= new Date(searchMinDate)) &&
+                (searchMaxDate === "" || new Date(annonce.annonce.date) <= new Date(searchMaxDate)) &&
+                (searchModel === "" || annonce.annonce.modele.nom.toLowerCase().includes(searchModel.toLowerCase())) &&
+                (searchMarque === "" || annonce.annonce.modele.marque.nom.toLowerCase().includes(searchMarque.toLowerCase()))
+            );
+        });
+
+        setAnnoncesEnVente(filtered);
+    };
+
+    useEffect(() => {
+        filterAnnonces();
+    }, [searchDescription, searchMinPrice, searchMaxPrice, searchMinDate, searchMaxDate, searchModel, searchMarque]);
+
     
     
     return (
         <>
-            <body>
-                <div className="grid-container">
+            <div className='threeSpaces'>
+            <div className='left recommandations '></div>
+
+                {/* <div className="search-bar">
+                    <form onSubmit={e => e.preventDefault()}>
+                        <label htmlFor="searchDescription">Description :</label>
+                        <input
+                            type="text"
+                            id="searchDescription"
+                            value={searchDescription}
+                            onChange={e => setSearchDescription(e.target.value)}
+                        />
+
+                        <label htmlFor="searchMarque">Marque :</label>
+                        <select
+                            id="searchMarque"
+                            value={searchMarque}
+                            onChange={e => setSearchMarque(e.target.value)}
+                        >
+                            <option value="">Toutes les marques</option>
+                        </select>
+
+                        <label htmlFor="searchModel">Modèle :</label>
+                        <select
+                            id="searchModel"
+                            value={searchModel}
+                            onChange={e => setSearchModel(e.target.value)}
+                        >
+                            <option value="">Tous les modèles</option>
+                        </select>
+
+                        <label htmlFor="searchMinPrice">Prix min :</label>
+                        <input
+                            type="number"
+                            id="searchMinPrice"
+                            value={searchMinPrice}
+                            onChange={e => setSearchMinPrice(e.target.value)}
+                        />
+
+                        <label htmlFor="searchMaxPrice">Prix max :</label>
+                        <input
+                            type="number"
+                            id="searchMaxPrice"
+                            value={searchMaxPrice}
+                            onChange={e => setSearchMaxPrice(e.target.value)}
+                        />
+
+                        <label htmlFor="searchMinDate">Date min :</label>
+                        <input
+                            type="date"
+                            id="searchMinDate"
+                            value={searchMinDate}
+                            onChange={e => setSearchMinDate(e.target.value)}
+                        />
+
+                        <label htmlFor="searchMaxDate">Date max :</label>
+                        <input
+                            type="date"
+                            id="searchMaxDate"
+                            value={searchMaxDate}
+                            onChange={e => setSearchMaxDate(e.target.value)}
+                        />
+
+                        <button onClick={() => filterAnnonces()}>Rechercher</button>
+                    </form>
+                </div> */}
+                <div className="middle annonces">
                     {annoncesEnVente.map((annonce, index) => (
                         <div className="car-card" key={index}>
-                            {annonce.annonce.status==0?(
+                            {/* {annonce.annonce.status==0?(
                             <div className="for-sale-badge-envente">
                                 <span className="badge-text-envente">En vente</span>
                             </div>
@@ -83,7 +176,7 @@ export default function Home() {
                             <div className="for-sale-badge-vendu">
                                 <span className="badge-text-vendu">Vendu</span>
                             </div>
-                            )}
+                            )} */}
                             <div className="car-owner">
                                 <img className="owner-avatar" src={annonce.annonce.proprietaire.photoProfil} alt="PDP" />
                                 <div className="owner-info">
@@ -91,13 +184,7 @@ export default function Home() {
                                     <p className="owner-timestamp"> {annonce.annonce.date[2]} {months[annonce.annonce.date[1]-1]} {annonce.annonce.date[0]} {annonce.annonce.date[3]}:{annonce.annonce.date[4]}</p>
                                 </div>
                             </div>
-                            <img className="car-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="imageCAR" />
-                            <div className="car-details">
-                                <h2>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</h2>
-                                <p>{annonce.annonce.description}</p>
-                                <br />
-                                <b>Prix: {annonce.annonce.prix.toLocaleString('en-US')} MGA</b>
-                            </div>
+                            <img className="car-image" src={annonce.photos[0].lienPhoto} alt="imageCAR" />
                             <div className="car-actions">
                                 <div>
                                     {annonce.liked.toString() === 'true' ? (
@@ -127,10 +214,18 @@ export default function Home() {
                                     </div>
                                 <button className="details-button" onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)}>Détails</button>
                             </div>
+                            <div className="car-details">
+                                <h2>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</h2>
+                                <p>{annonce.annonce.description}</p>
+                                <br />
+                                <b>{annonce.annonce.prix.toLocaleString('en-US')} MGA</b>
+                            </div>
                         </div>
                     ))}
                 </div>
-            </body>
+                <div className='right messages'></div>
+
+            </div>
         </>
     );
 }
