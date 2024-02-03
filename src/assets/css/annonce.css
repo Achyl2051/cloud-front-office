@@ -6,7 +6,7 @@
     display: grid;
     justify-content: center;
     grid-template-columns: 1fr 2fr 1fr;
-    /* gap: 20px; */
+    gap: 5px;
 }
 
 .annonces {
@@ -22,9 +22,27 @@
     background-color: #c7c7c7;
 }
 
-.annonces ::-webkit-scrollbar {
-    width: 29px;
-  }
+
+/* Define the width of the scrollbar */
+.annonces::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Define the background color of the scrollbar track */
+.annonces::-webkit-scrollbar-track {
+    /* background: #e61515; */
+}
+
+/* Define the background color of the scrollbar handle */
+.annonces::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Define the background color of the scrollbar handle when hovered */
+.annonces::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 
 
 .car-card {
@@ -46,6 +64,7 @@
     height: 400px;
     object-fit: cover;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 
@@ -71,8 +90,6 @@ p {
     display: flex;
     align-items: center;
     padding: 10px;
-    /* background-color: #f8f8f8; */
-    border-bottom: 1px solid #ddd;
 }
 
 .owner-avatar {
@@ -145,6 +162,16 @@ p {
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
+}
+
+.annonceButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-left: 10px;
+    gap: 1.2rem;
+    /* backgroundColor: red; */
 }
 
 .fixed {

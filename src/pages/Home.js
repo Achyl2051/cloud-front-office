@@ -2,7 +2,9 @@ import '../assets/css/annonce.css';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaPhoneSquare } from 'react-icons/fa';
+import { MdInsertPhoto } from "react-icons/md";
 import axios from 'axios';
+import { FiMessageCircle } from 'react-icons/fi';
 
 export default function Home() {
     let navigate = useNavigate();
@@ -34,7 +36,7 @@ export default function Home() {
         setAnnoncesEnVente(result.data);
         console.log(result.data);
     };
-    
+
 
     const redirectToDetailPage = (idAnnonce) => {
         navigate(`/detailannonce/${idAnnonce}`);
@@ -44,37 +46,7 @@ export default function Home() {
         "Jan", "Feb", "Mar", "Apr", "Mai", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
-    const onClickLiked = async (e, idAnnonce) => {
-        e.preventDefault();
-        console.log("liked");
-        try {
-                const params = new URLSearchParams();
-                params.append("idAnnonce", idAnnonce);
-                params.append("idUser", userId.id);    
-                await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
-                    params,
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                window.location.reload();
-        } catch (error) {
-            navigate("/login");
-        }
-    };
-    const onClickDislike = async (e, idAnnonce) => {
-        e.preventDefault();
-        console.log("disliked");
-        try {
-            const params = new URLSearchParams();
-            params.append("idAnnonce", idAnnonce);
-            params.append("idUser", userId.id);
-            await axios.post("http://localhost:8080/annoncefavoris", params, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            window.location.reload();
-        } catch (error) {
-            navigate("/login");
-        }
-    };
+
     const filterAnnonces = () => {
         let filtered = allAnnonces.filter(annonce => {
             return (
@@ -95,12 +67,132 @@ export default function Home() {
         filterAnnonces();
     }, [searchDescription, searchMinPrice, searchMaxPrice, searchMinDate, searchMaxDate, searchModel, searchMarque]);
 
-    
-    
+
+    // --
+    const Annonce = ({ annonce }) => {
+        const [liked, setLiked] = useState(annonce.liked);
+        const [nombrePhotos, setNombrePhotos] = useState(annonce.photos.length);
+
+        const handleLike = () => {
+            if(liked){
+                unlike();
+            }
+            else{
+                like();
+            }
+            setLiked(!liked);
+        };
+
+        const unlike = async () => {
+            // e.preventDefault();
+            console.log("liked");
+            try {
+                const params = new URLSearchParams();
+                params.append("idAnnonce", annonce.annonce.idAnnonce);
+                params.append("idUser", userId.id);
+                await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
+                    params,
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                // window.location.reload();
+            } catch (error) {
+                navigate("/login");
+            }
+        };
+
+        const like = async () => {
+            // e.preventDefault();
+            console.log("disliked");
+            try {
+                const params = new URLSearchParams();
+                params.append("idAnnonce", annonce.annonce.idAnnonce);
+                params.append("idUser", userId.id);
+                await axios.post("http://localhost:8080/annoncefavoris", params, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                // window.location.reload();
+            } catch (error) {
+                navigate("/login");
+            }
+        };
+
+        return (
+            <div className="car-card">
+                {/* {annonce.annonce.status==0?(
+            <div className="for-sale-badge-envente">
+                <span className="badge-text-envente">En vente</span>
+            </div>
+            ):(
+            <div className="for-sale-badge-vendu">
+                <span className="badge-text-vendu">Vendu</span>
+            </div>
+            )} */}
+                <div className="car-owner">
+                    <img className="owner-avatar" src={annonce.annonce.proprietaire.photoProfil} alt="PDP" />
+                    <div className="owner-info">
+                        <p className="owner-name">{annonce.annonce.proprietaire.nom}</p>
+                        <p className="owner-timestamp"> {annonce.annonce.date[2]} {months[annonce.annonce.date[1] - 1]} {annonce.annonce.date[0]} {annonce.annonce.date[3]}:{annonce.annonce.date[4]}</p>
+                    </div>
+                </div>
+
+                <img className="car-image" src={annonce.photos[0].lienPhoto} onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)} alt="imageCAR" />
+
+                <div className='nombrePhotos'>
+                    {/* <span style={global.nombrePhotosNombre}>+ {nombrePhotos}</span> */}
+                    <MdInsertPhoto size={20} color="white" />
+                </div>
+
+                <div className="car-actions">
+                    <div className='annonceButtons'>
+                        {/* {!liked ? (
+                        <div
+                            style={{ fontSize: '1.5em', border: 'none' }}
+                            onClick={(e) => like(e)}
+                        >
+                            <FaHeart className="nav-icons" style={{ color: 'red' }} />
+                        </div>
+                    ) : (
+                        <div
+                            onClick={(e) => unlike(e)}
+                        >
+                            <FaRegHeart size={25} />
+                        </div>
+                    )} */}
+
+                        <div onClick={handleLike} style={{ cursor: 'pointer', color: liked ? 'red' : 'inherit' }}>
+                            {liked ? <FaHeart size={25} /> : <FaRegHeart size={25} />}
+                        </div>
+
+                        {userId && userId.id ? (
+                            (annonce.annonce.proprietaire.id === userId.id ? (
+                                <></>
+                            ) : (
+                                <div> <FiMessageCircle size={27} /> </div>
+                            ))
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                    {/* <button className="details-button" onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)}>Détails</button> */}
+                </div>
+                <div className="car-details">
+                    <h2>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</h2>
+                    <p>{annonce.annonce.description}</p>
+                    <br />
+                    <b>{annonce.annonce.prix.toLocaleString('en-US')} MGA</b>
+                </div>
+            </div>
+        );
+    };
+
+
+
+    // --
+
     return (
         <>
             <div className='threeSpaces'>
-            <div className='left recommandations '></div>
+                <div className='left recommandations '></div>
 
                 {/* <div className="search-bar">
                     <form onSubmit={e => e.preventDefault()}>
@@ -167,60 +259,7 @@ export default function Home() {
                 </div> */}
                 <div className="middle annonces">
                     {annoncesEnVente.map((annonce, index) => (
-                        <div className="car-card" key={index}>
-                            {/* {annonce.annonce.status==0?(
-                            <div className="for-sale-badge-envente">
-                                <span className="badge-text-envente">En vente</span>
-                            </div>
-                            ):(
-                            <div className="for-sale-badge-vendu">
-                                <span className="badge-text-vendu">Vendu</span>
-                            </div>
-                            )} */}
-                            <div className="car-owner">
-                                <img className="owner-avatar" src={annonce.annonce.proprietaire.photoProfil} alt="PDP" />
-                                <div className="owner-info">
-                                    <p className="owner-name">{annonce.annonce.proprietaire.nom}</p>
-                                    <p className="owner-timestamp"> {annonce.annonce.date[2]} {months[annonce.annonce.date[1]-1]} {annonce.annonce.date[0]} {annonce.annonce.date[3]}:{annonce.annonce.date[4]}</p>
-                                </div>
-                            </div>
-                            <img className="car-image" src={annonce.photos[0].lienPhoto} alt="imageCAR" />
-                            <div className="car-actions">
-                                <div>
-                                    {annonce.liked.toString() === 'true' ? (
-                                        <button 
-                                            style={{ fontSize: '1.5em', border: 'none', backgroundColor: '#f8f8f8' }}
-                                            onClick={(e) => onClickLiked(e, annonce.annonce.idAnnonce)}
-                                        >
-                                        <FaHeart className="nav-icons" style={{ color: 'red' }} />
-                                    </button>
-                                        ) : (
-                                            <button 
-                                            style={{ fontSize: '1.5em', border: 'none', backgroundColor: '#f8f8f8' }}
-                                            onClick={(e) => onClickDislike(e, annonce.annonce.idAnnonce)}
-                                        >
-                                            <FaRegHeart className="nav-icons" />
-                                        </button>
-                                    )}
-                                    {userId && userId.id ? (
-                                        (annonce.annonce.proprietaire.id === userId.id ? (
-                                            <p></p>
-                                        ) : (
-                                            <button style={{ fontSize: '1.5em',border:'none',backgroundColor:'#f8f8f8' }}> <FaPhoneSquare className="nav-icons" /> </button>
-                                        ))
-                                    ) : (
-                                        <p></p>
-                                    )}
-                                    </div>
-                                <button className="details-button" onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)}>Détails</button>
-                            </div>
-                            <div className="car-details">
-                                <h2>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</h2>
-                                <p>{annonce.annonce.description}</p>
-                                <br />
-                                <b>{annonce.annonce.prix.toLocaleString('en-US')} MGA</b>
-                            </div>
-                        </div>
+                        <Annonce annonce={annonce} />
                     ))}
                 </div>
                 <div className='right messages'></div>
