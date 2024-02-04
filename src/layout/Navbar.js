@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaHome, FaEnvelope, FaHeart, FaUser, FaSignOutAlt, FaSignInAlt } from 'react-icons/fa';
 import { FiHome, FiMessageCircle, FiUser, FiHeart, FiSearch } from "react-icons/fi";
 import "../assets/css/Nav.css";
@@ -21,10 +21,25 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Vous pouvez ajuster cette condition en fonction de vos besoins spécifiques
+      if (window.scrollY > -1) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    };
+
+    // Écouter l'événement de défilement du corps
+    window.addEventListener('scroll', handleScroll);
+
+    // Nettoyer l'écouteur d'événement lors du démontage du composant
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <div>
@@ -47,27 +62,27 @@ export default function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0 nav-elements">
               <li className="nav-item"  >
-                <Link className="nav-link" to="/">
+                <NavLink  className="navLink" to="/" activeClassName="active">
                   <FiHome size={20} />{' '}
                   <span className="link-text"></span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item"  >
-                <Link className="nav-link" to="/message">
+                <NavLink className="navLink" to="/message" activeClassName="active">
                   <FiMessageCircle size={20} />{' '}
                   <span className="link-text"></span>
-                </Link>
+                </NavLink>
               </li>
               <li className="nav-item" >
-                <Link className="nav-link" to="/favoris">
+                <NavLink className="navLink" to="/favoris" activeClassName="active">
                   <FiHeart size={20} />{' '}
                   <span className="link-text"></span>
-                </Link>
+                </NavLink>
               </li>
 
               {user == null ? (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
+                  <Link className="" to="/login">
                     <div className="button" type="button">
                       <span>Se connecter</span>
                     </div>
@@ -82,14 +97,14 @@ export default function Navbar() {
                   </div>
                   {isOpen && (
                     <div className="dropdown-container">
-                          <Link className='menu-link' to="/profil">
-                            <FiUser size={20} />
-                            <span>Profil</span>
-                          </Link>
-                          <Link className='button-logout' to="/logout">
-                              <FaSignInAlt className='logout-icon' size={20} />
-                              <span>Se Deconnecter</span>
-                          </Link>
+                      <Link className='menu-link' to="/profil">
+                        <FiUser size={20} />
+                        <span>Profil</span>
+                      </Link>
+                      <Link className='button-logout' to="/logout">
+                        <FaSignInAlt className='logout-icon' size={20} />
+                        <span>Se Deconnecter</span>
+                      </Link>
                     </div>
                   )}
                 </li>

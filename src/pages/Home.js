@@ -23,6 +23,10 @@ export default function Home() {
 
     useEffect(() => {
         loadAnnonceEnVente();
+        const intervalId = setInterval(() => {
+            loadAnnonceEnVente();
+        }, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const loadAnnonceEnVente = async () => {
@@ -137,8 +141,8 @@ export default function Home() {
                     <img className="car-image" src={annonce.photos[0].lienPhoto} onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)} alt="imageCAR" />
 
                     <div className='nombrePhotos'>
-                        <span style={global.nombrePhotosNombre}>+ {nombrePhotos}</span>
-                        <MdInsertPhoto size={20} color="white" />
+                        <span style={global.nombrePhotosNombre}>+{nombrePhotos}</span>
+                        <MdInsertPhoto size={18} color="white" />
                     </div>
                 </div>
 
@@ -165,7 +169,7 @@ export default function Home() {
                 </div>
                 <div className="car-details">
                     <div className='marque'>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</div>
-                    <div  className='description'>{annonce.annonce.description}</div>
+                    <div className='description'>{annonce.annonce.description}</div>
                     <div className='prix'>{annonce.annonce.prix.toLocaleString('en-US')} MGA</div>
                 </div>
             </div>
@@ -177,9 +181,13 @@ export default function Home() {
     // --
 
     return (
-        <>
+        <div className='home'>
             <div className='threeSpaces'>
-                <div className='left recommandations '></div>
+                <div className='left'>
+                    <div className='recommandations'>
+                        recommandations
+                    </div>
+                </div>
 
                 {/* <div className="search-bar">
                     <form onSubmit={e => e.preventDefault()}>
@@ -249,9 +257,13 @@ export default function Home() {
                         <Annonce annonce={annonce} />
                     ))}
                 </div>
-                <div className='right messages'></div>
+                <div className='right'>
+                    <div className='messages'>
+
+                    </div>
+                </div>
 
             </div>
-        </>
+        </div>
     );
 }

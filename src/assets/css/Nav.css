@@ -23,12 +23,22 @@ nav {
   height: 50px;
 }
 
-.nav-elements{
+.navLink {
+  color: #a0a0a0;
+  transition: all ease-in-out .4s;
+}
+
+.navLink.active {
+  color: rgb(0, 0, 0);
+}
+
+.nav-elements {
   /* background-color: red; */
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: .7rem;
 }
 
 input {
@@ -54,22 +64,24 @@ input {
   font-size: 14px;
   width: 'max-content';
   color: #fff;
-  transition:all ease-in-out .3s; 
-}
-
-.button:hover,
-.button-logout:hover {
-  background-color: #000;
-
-}
-
-.button-logout .logout-icon{
   transition: all ease-in-out .3s;
 }
 
-.button-logout:hover .logout-icon{
+.button:hover,
+.button-logout:hover,
+.button-contact:hover {
+  background-color: #000;
+  cursor: pointer;
+}
+
+.button-logout .logout-icon {
+  transition: all ease-in-out .3s;
+}
+
+.button-logout:hover .logout-icon {
   transform: translateX(5px);
 }
+
 .button-logout {
   display: flex;
   gap: 1rem;
@@ -80,7 +92,19 @@ input {
   font-size: 14px;
   width: 'max-content';
   color: #fff;
-  transition:all ease-in-out .3s; 
+  transition: all ease-in-out .3s;
+}
+.button-contact{
+  display: flex;
+  gap: 1rem;
+  text-decoration: none;
+  background-color: #333333;
+  padding: 10px 10px 10px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  width: 150px;
+  color: #fff;
+  transition: all ease-in-out .3s;
 }
 
 .searchBar {
@@ -104,7 +128,8 @@ input {
   /* font-size: 20px; */
   padding: 3px;
 }
-.searchBarInput::placeholder{
+
+.searchBarInput::placeholder {
   font-size: 15px;
   color: #8f8f8f;
 }
@@ -118,7 +143,7 @@ input {
   height: 20px;
   border-radius: 50px;
   background-color: transparent;
-  color:#474747;
+  color: #474747;
 }
 
 /* Styles pour le conteneur de l'image de profil */
@@ -141,7 +166,7 @@ input {
 /* Dropdown.css */
 .dropdown-container {
   position: absolute;
-  right:10px;
+  right: 10px;
   display: flex;
   border-radius: 10px;
   background-color: #fff;
@@ -165,7 +190,7 @@ input {
   background-color: #f0f0f0;
 }
 
-.menu-link{
+.menu-link {
   padding: 5px 10px;
   background-color: rgb(243, 243, 243);
   border-radius: 5px;

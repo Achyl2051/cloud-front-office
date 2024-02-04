@@ -6,6 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { FiMessageCircle } from 'react-icons/fi';
 
 export default function DetailAnnonce() {
     let navigate = useNavigate();
@@ -59,13 +60,13 @@ export default function DetailAnnonce() {
                 }
             });
         }
-        console.log(detailannonce);
+        // console.log(detailannonce);
         // loadCategorie();
     }, [detailannonce]);
 
     const loadDetailAnnonce = async () => {
         try {
-            const idToUse = userId ? userId.id : 0;
+            const idToUse = userId.id;
             const response = await axios.get(`http://localhost:8080/auth/annonces/details/${id}?idUser=` + idToUse, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -73,6 +74,8 @@ export default function DetailAnnonce() {
             });
 
             setDetailAnnonce(response.data);
+            setLiked(response.data.liked)
+
         } catch (error) {
             console.error('Error fetching details:', error);
         }
@@ -92,37 +95,7 @@ export default function DetailAnnonce() {
     //     });
     //     setCategorie(result.data);
     // }
-    const onClickLiked = async (e, idAnnonce) => {
-        e.preventDefault();
-        console.log("liked");
-        try {
-            const params = new URLSearchParams();
-            params.append("idAnnonce", idAnnonce);
-            params.append("idUser", userId.id);
-            await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
-                params,
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            window.location.reload();
-        } catch (error) {
-            navigate("/login");
-        }
-    };
-    const onClickDislike = async (e, idAnnonce) => {
-        e.preventDefault();
-        console.log("disliked");
-        try {
-            const params = new URLSearchParams();
-            params.append("idAnnonce", idAnnonce);
-            params.append("idUser", userId.id);
-            await axios.post("http://localhost:8080/annoncefavoris", params, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            window.location.reload();
-        } catch (error) {
-            navigate("/login");
-        }
-    };
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     const settings = {
         dots: true,
@@ -130,25 +103,72 @@ export default function DetailAnnonce() {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
+        beforeChange: (current, next) => setCurrentSlide(next),
+        customPaging: (i) => (
+            <div
+                style={{
+                    marginTop: '10px',
+                    width: '12px',
+                    height: '12px',
+                    backgroundColor: i === currentSlide ? '#000' : '#ccc',
+                    borderRadius: '50%',
+                }}
+            />
+        ),
+    };
+
+    const [liked, setLiked] = useState(detailannonce.liked);
+
+    const handleLike = () => {
+        if (liked) {
+            unlike();
+        }
+        else {
+            like();
+        }
+        setLiked(!liked);
+    };
+
+    const unlike = async () => {
+        console.log("unliked");
+        try {
+            const params = new URLSearchParams();
+            params.append("idAnnonce", detailannonce.annonce.idAnnonce);
+            params.append("idUser", userId.id);
+            await axios.delete("http://localhost:8080/annoncefavoris/unlike", {
+                params,
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+        } catch (error) {
+            navigate("/login");
+        }
+    };
+
+    const like = async () => {
+        console.log("liked");
+        try {
+            const params = new URLSearchParams();
+            params.append("idAnnonce", detailannonce.annonce.idAnnonce);
+            params.append("idUser", userId.id);
+            await axios.post("http://localhost:8080/annoncefavoris", params, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+        } catch (error) {
+            navigate("/login");
+        }
     };
 
     return (
         <>
             <body>
                 <div class="dcar-details-page">
-
-                    {/* <div class="dmain-image-container">
-                        <img class="dmain-image" src="https://i.pinimg.com/564x/39/79/2b/39792bd2ceca6eef9004c1a989d651e1.jpg" alt="Voiture principale" />
-                    </div> */}
-
-                    {/* <div class="dcar-gallery">
-
-                        {detailannonce.photos.map((photo) => (
-                            <img class="dcar-image" src={photo.lienPhoto} alt="Voiture 2" />
-
-                        ))}
-                    </div> */}
-
+                    <div class="downer-info">
+                        <img class="downer-avatar" src={detailannonce.annonce.proprietaire.photoProfil} alt="Avatar" />
+                        <div>
+                            <div class="downer-name">{detailannonce.annonce.proprietaire.nom}</div>
+                            <div class="downer-timestamp">{detailannonce.annonce.date[2]} {months[detailannonce.annonce.date[1] - 1]} {detailannonce.annonce.date[0]} {detailannonce.annonce.date[3]}:{detailannonce.annonce.date[4]}</div>
+                        </div>
+                    </div>
                     <Slider {...settings}>
                         {detailannonce.photos.map((photo, index) => (
                             <div key={index} className='dcar-image'>
@@ -157,24 +177,28 @@ export default function DetailAnnonce() {
                         ))}
                     </Slider>
 
+                    <div className="dannonceButtons">
+                        <div onClick={handleLike} style={{ cursor: 'pointer', color: liked ? 'red' : 'inherit' }}>
+                            {liked ? <FaHeart size={26} /> : <FaRegHeart size={22} />}
+                        </div>
+                        <div className="button-contact"><FiMessageCircle  size={24} />Contacter</div>
+
+                    </div>
+
+
+
                     <div class="dcar-details">
                         {detailannonce.annonce.status == 0 ? (
-                            <p className="dstatusenvente">  En vente </p>
+                            <></>
                         ) : (
                             <p className="dstatusvendu">  Vendu </p>
                         )}
-                        <h1>{detailannonce.annonce.modele.marque.nom} {detailannonce.annonce.modele.nom}</h1>
-                        <div class="downer-info">
-                            <img class="downer-avatar" src={detailannonce.annonce.proprietaire.photoProfil} alt="Avatar" />
-                            <div>
-                                <p class="downer-name">{detailannonce.annonce.proprietaire.nom}</p>
-                                <p class="downer-timestamp">{detailannonce.annonce.date[2]} {months[detailannonce.annonce.date[1] - 1]} {detailannonce.annonce.date[0]} {detailannonce.annonce.date[3]}:{detailannonce.annonce.date[4]}</p>
-                            </div>
-                        </div>
-                        <div class="dcar-description">
+                        <div className='marque'>{detailannonce.annonce.modele.marque.nom} {detailannonce.annonce.modele.nom}</div>
+
+                        <div class="description">
                             <p>{detailannonce.annonce.description}</p>
                         </div>
-                        <p class="dcar-price">Prix: {detailannonce.annonce.prix.toLocaleString('en-US')} MGA</p>
+                        <p class="prix">{detailannonce.annonce.prix.toLocaleString('en-US')} MGA</p>
 
                         {detailannonce.annonce.status == 0 && detailannonce.annonce.proprietaire.id !== userId?.id ? (
                             <a class="dbuy-button">Acheter</a>
@@ -192,39 +216,31 @@ export default function DetailAnnonce() {
 
                     <div class="dadditional-details">
                         <div class="ddetails-section">
-                            <h2>Source d'energie</h2>
-                            <p>{detailannonce.annonce.carburant.nom}</p>
+                            <div className='details-name'>Source d'energie</div>
+                            <div className='details-value'>{detailannonce.annonce.carburant.nom}</div>
                         </div>
                         <div class="ddetails-section">
-                            <h2>Boite de vitesse</h2>
-                            <p>{detailannonce.annonce.boite}</p>
+                            <div className='details-name'>Boite de vitesse</div>
+                            <div className='details-value'>{detailannonce.annonce.boite}</div>
                         </div>
                         <div class="ddetails-section">
-                            <h2>Kilometrage</h2>
-                            <p>{detailannonce.annonce.kilometrage} km </p>
+                            <div className='details-name'>Kilometrage</div>
+                            <div className='details-value'>{detailannonce.annonce.kilometrage} km </div>
                         </div>
                         <div class="ddetails-section">
-                            <h2>Histoire d'entretien</h2>
-                            <p>Entretien régulier effectué chez le concessionnaire</p>
-                            <p>Aucun accident signalé</p>
+                            <div className='details-name'>Histoire d'entretien</div>
+                            <ul>
+                                <li className='details-value'>Entretien régulier effectué chez le concessionnaire</li>
+                                <li className='details-value'>Aucun accident signalé</li>
+                            </ul>
+
                         </div>
                         <div class="ddetails-section">
-                            <h2>Contact</h2>
-                            <p>{detailannonce.annonce.contact}</p>
+                            <div className='details-name'>Contact</div>
+                            <div className='details-value'>{detailannonce.annonce.contact}</div>
                         </div>
                     </div>
-                    <div className="dbutton-container">
-                        <button className="dcontacter-button"><FaPhoneSquare /> Contacter</button>
-                        {detailannonce.liked.toString() === 'true' ? (
-                            <button className="dfavoris-button"
-                                onClick={(e) => onClickLiked(e, detailannonce.annonce.idAnnonce)}
-                            ><FaHeart /> Supprimer favoris</button>
-                        ) : (
-                            <button className="dfavoris-button"
-                                onClick={(e) => onClickDislike(e, detailannonce.annonce.idAnnonce)}
-                            ><FaHeart /> Ajouter favoris</button>
-                        )}
-                    </div>
+
                 </div>
 
             </body>
