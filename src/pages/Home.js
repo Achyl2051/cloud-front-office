@@ -74,10 +74,10 @@ export default function Home() {
         const [nombrePhotos, setNombrePhotos] = useState(annonce.photos.length);
 
         const handleLike = () => {
-            if(liked){
+            if (liked) {
                 unlike();
             }
-            else{
+            else {
                 like();
             }
             setLiked(!liked);
@@ -131,55 +131,42 @@ export default function Home() {
                     <img className="owner-avatar" src={annonce.annonce.proprietaire.photoProfil} alt="PDP" />
                     <div className="owner-info">
                         <p className="owner-name">{annonce.annonce.proprietaire.nom}</p>
-                        <p className="owner-timestamp"> {annonce.annonce.date[2]} {months[annonce.annonce.date[1] - 1]} {annonce.annonce.date[0]} {annonce.annonce.date[3]}:{annonce.annonce.date[4]}</p>
+                    </div>
+                </div>
+                <div className='imageContainer'>
+                    <img className="car-image" src={annonce.photos[0].lienPhoto} onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)} alt="imageCAR" />
+
+                    <div className='nombrePhotos'>
+                        <span style={global.nombrePhotosNombre}>+ {nombrePhotos}</span>
+                        <MdInsertPhoto size={20} color="white" />
                     </div>
                 </div>
 
-                <img className="car-image" src={annonce.photos[0].lienPhoto} onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)} alt="imageCAR" />
-
-                <div className='nombrePhotos'>
-                    {/* <span style={global.nombrePhotosNombre}>+ {nombrePhotos}</span> */}
-                    <MdInsertPhoto size={20} color="white" />
-                </div>
 
                 <div className="car-actions">
                     <div className='annonceButtons'>
-                        {/* {!liked ? (
-                        <div
-                            style={{ fontSize: '1.5em', border: 'none' }}
-                            onClick={(e) => like(e)}
-                        >
-                            <FaHeart className="nav-icons" style={{ color: 'red' }} />
-                        </div>
-                    ) : (
-                        <div
-                            onClick={(e) => unlike(e)}
-                        >
-                            <FaRegHeart size={25} />
-                        </div>
-                    )} */}
-
                         <div onClick={handleLike} style={{ cursor: 'pointer', color: liked ? 'red' : 'inherit' }}>
-                            {liked ? <FaHeart size={25} /> : <FaRegHeart size={25} />}
+                            {liked ? <FaHeart size={22} /> : <FaRegHeart size={22} />}
                         </div>
 
                         {userId && userId.id ? (
                             (annonce.annonce.proprietaire.id === userId.id ? (
                                 <></>
                             ) : (
-                                <div> <FiMessageCircle size={27} /> </div>
+                                <div> <FiMessageCircle size={24} /> </div>
                             ))
                         ) : (
                             <></>
                         )}
+                        <div className="annonceDate"> {annonce.annonce.date[2]} {months[annonce.annonce.date[1] - 1]} {annonce.annonce.date[0]} {annonce.annonce.date[3]}:{annonce.annonce.date[4]}</div>
+
                     </div>
                     {/* <button className="details-button" onClick={() => redirectToDetailPage(annonce.annonce.idAnnonce)}>Détails</button> */}
                 </div>
                 <div className="car-details">
-                    <h2>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</h2>
-                    <p>{annonce.annonce.description}</p>
-                    <br />
-                    <b>{annonce.annonce.prix.toLocaleString('en-US')} MGA</b>
+                    <div className='marque'>{annonce.annonce.modele.marque.nom} {annonce.annonce.modele.nom}</div>
+                    <div  className='description'>{annonce.annonce.description}</div>
+                    <div className='prix'>{annonce.annonce.prix.toLocaleString('en-US')} MGA</div>
                 </div>
             </div>
         );

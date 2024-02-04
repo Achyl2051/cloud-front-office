@@ -1,6 +1,6 @@
 .threeSpaces {
     position: relative;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
     margin: 0;
     /* padding: 20px; */
     display: grid;
@@ -19,7 +19,7 @@
     max-width: 1200px;
     overflow-y: scroll;
     overflow-x: hidden;
-    background-color: #c7c7c7;
+    /* background-color: #c7c7c7; */
 }
 
 
@@ -53,10 +53,14 @@
     overflow: hidden;
     min-height: 150px;
     width: 100%;
-    background: white;
-    padding: 5px;
+    background: var(--bgColor);
+    ;
+    /* padding: 5px; */
+}
 
-
+.imageContainer {
+    position: relative;
+    padding: 0 5px;
 }
 
 .car-image {
@@ -67,10 +71,64 @@
     cursor: pointer;
 }
 
+.nombrePhotos {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    right: 10px;
+    padding: 3px 5px;
+    /* Equivalent à paddingVertical: 3, paddingHorizontal: 5 */
+    border-radius: 5px;
+    background-color: #000;
+    color: #fff;
+    /* font-weight: bold;
+     */
+    align-self: flex-start;
+    font-size: 14px;
+}
+.annonceButtons {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center; */
+    align-items: center;
+    padding-left: 10px;
+    gap: 1.2rem;
+    position: relative;
+    width: 100%;
+}
+
+
+.annonceDate {
+    position: absolute;
+    right: 5px;
+    top: -5px;
+    color: #a1a1a1;
+    /* Remplace --gray-color */
+    font-size: 11px;
+    display: flex;
+    width: max-content;
+}
+
 
 .car-details {
-    padding: 15px;
+    padding: 0 15px;
+    color: var(--blackColor);
 }
+
+.marque{
+    font-weight: bold;
+}
+.description{
+    font-size: 13px;
+    color: var(--grayColor);
+}
+.prix{
+    font-weight: bold;
+}
+
 
 h2,
 p {
@@ -93,8 +151,8 @@ p {
 }
 
 .owner-avatar {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     margin-right: 10px;
     object-fit: cover;
@@ -164,15 +222,6 @@ p {
     font-weight: bold;
 }
 
-.annonceButtons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-left: 10px;
-    gap: 1.2rem;
-    /* backgroundColor: red; */
-}
 
 .fixed {
     position: fixed;
