@@ -56,3 +56,25 @@
 }
 
 
+
+/* Define the width of the scrollbar */
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Define the background color of the scrollbar track */
+body::-webkit-scrollbar-track {
+  background: var(--grayColor);
+}
+
+/* Define the background color of the scrollbar handle */
+body::-webkit-scrollbar-thumb {
+  background: var(--darkGrayColor);
+  border-radius: 20px;
+}
+
+/* Define the background color of the scrollbar handle when hovered */
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+
+}

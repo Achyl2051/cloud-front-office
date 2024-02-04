@@ -185,7 +185,7 @@ export default function Home() {
             <div className='threeSpaces'>
                 <div className='left'>
                     <div className='recommandations'>
-                        recommandations
+                        filtre
                     </div>
                 </div>
 
@@ -259,7 +259,7 @@ export default function Home() {
                 </div>
                 <div className='right'>
                     <div className='messages'>
-
+messages
                     </div>
                 </div>
 
